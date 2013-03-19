@@ -1,11 +1,9 @@
 var http=require('http'),
     url=require('url'),
     qs=require('querystring'),
-    router=require('./router.js'),
-    fs=require('fs');
+    router=require('./router.js');
 
 
-var db=JSON.parse(fs.readFileSync('index.db','utf-8'));
 function onRequest(req,res){
 
     var data="";

@@ -19,7 +19,7 @@ function onRequest(req,res){
         if(typeof data==='string'){
             data=qs.parse(data);
         }
-        router.router(req,res,path,param, data,db);
+        router.router(req,res,path,param, data);
     });
 }
 http.createServer(onRequest).listen(8888);

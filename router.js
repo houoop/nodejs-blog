@@ -1,12 +1,13 @@
 var handlebars = require('handlebars'),
 async = require('async'),
 fs = require('fs'),
-mk = require('markdown'),
 pt = require('path'),
 config = require('./config.js'),
 zlib = require("zlib"),
 cache = require('./cache.js');
-
+handlebars.registerHelper('index', function(index) {
+  return index+1;
+});
 var router = function(req, res, path, param, postData) {
 	var rootpath = /[^\/?]+/gi.exec(path);
 	if (rootpath === null) {
@@ -16,23 +17,9 @@ var router = function(req, res, path, param, postData) {
 		case 'post':
 			readSinglePost(path, res);
 			break;
-		case 'edit':
-			createNewPost(res);
-			break;
-		case 'savepost':
-			savePost(res, postData);
-			break;
-		case 'SavePostSuccess':
-			savePostSuccess(res, param);
-			break;
 		case 'assets':
 			returnStaticFile(req, res, path);
 			break;
-			/*
-             *case 'verify':
-             *    userVerify(res,param);
-             *    break;
-             */
 		default:
 			Error404(res);
 			break;
@@ -46,15 +33,6 @@ var Error404 = function(res) {
 	});
 	res.write('404');
 	res.end();
-};
-var userVerify = function(res, param) {
-	if (param.pwd && param.pwd === config.config.user.pwd) {
-		res.writeHead(200, 'verify success', {
-			'Content-Type': 'text/json;charset=utf8'
-		});
-		res.write('{result:true}');
-		res.end();
-	}
 };
 var returnStaticFile = function(req, res, path) {
 	var ext = pt.extname(path).substr(1);
@@ -131,7 +109,7 @@ var readIndexPost = function(res) {
 	res.end();
 };
 var readSinglePost = function(path, res) {
-	var fileID = (/[^\/post\/?]+/gi.exec(path))[0];
+	var fileID = (/[^\/post\/?]+/gi.exec(path))?(/[^\/post\/?]+/gi.exec(path))[0]:1;
 	console.log('fileID=' + fileID);
 	if (cache.db.posts[fileID - 1] === undefined) {
 		Error404(res);
@@ -146,54 +124,6 @@ var readSinglePost = function(path, res) {
 		post: cache.db.posts[fileID - 1]
 	}));
 	res.end();
-};
-var createNewPost = function(res) {
-	fs.readFile('newpost.html', 'utf-8', function(err, data) {
-		if (err) {
-			console.log(err);
-			throw err;
-		}
-		res.writeHead(200, {
-			'Content-Type': 'text/html;charset=utf8'
-		});
-		res.write(data);
-		res.end();
-	});
-};
-var savePost = function(res, postData) {
-	var lastIndex = cache.db.posts.length;
-	cache.db.posts[lastIndex] = {
-		'index': lastIndex,
-		'title': postData.title,
-		'content': mk.markdown.toHTML(postData.content)
-	};
-	fs.writeFile('index.db', JSON.stringify(cache.db), function(err) {
-		if (err) {
-			console.log("error to save index.db");
-			throw err;
-		}
-		res.writeHead(302, {
-			'Location': '/SavePostSuccess?id=' + ( lastIndex + 1 )
-		});
-		res.end();
-	});
-};
-var savePostSuccess = function(res, param) {
-	if ( !! param.id && typeof param.id === 'number') {
-		Error404(res);
-		return;
-	}
-	fs.readFile('savepostsuccess.html', 'utf-8', function(err, data) {
-		if (err) {
-			console.log(err);
-			throw err;
-		}
-		res.writeHead(200, {
-			'Content-Type': 'text/html;charset=utf8'
-		});
-		res.write(data);
-		res.end();
-	});
 };
 MIME_TYPE = {
 	"css": "text/css",

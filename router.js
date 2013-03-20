@@ -31,7 +31,7 @@ var Error404 = function(res) {
 	res.writeHead(200, {
 		'Content-Type': 'text/html;charset=utf8'
 	});
-	res.write('404');
+	res.write('<h1>我已经焕然一新了</h1><script>setTimeout(function(){location.href="/"},2000)</script>');
 	res.end();
 };
 var returnStaticFile = function(req, res, path) {
@@ -109,7 +109,11 @@ var readIndexPost = function(res) {
 	res.end();
 };
 var readSinglePost = function(path, res) {
-	var fileID = (/[^\/post\/?]+/gi.exec(path))?(/[^\/post\/?]+/gi.exec(path))[0]:1;
+	var fileID = (/[^\/post\/?]+/gi.exec(path))?(/[^\/post\/?]+/gi.exec(path))[0]:null;
+    if(fileID===null){
+        Error404(res);
+        return;
+    }
 	console.log('fileID=' + fileID);
 	if (cache.db.posts[fileID - 1] === undefined) {
 		Error404(res);

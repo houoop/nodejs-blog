@@ -22,4 +22,4 @@ function onRequest(req,res){
         router.router(req,res,path,param, data);
     });
 }
-http.createServer(onRequest).listen(8888);
+http.createServer(onRequest).listen(80);

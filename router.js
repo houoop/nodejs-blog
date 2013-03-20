@@ -1,13 +1,9 @@
-var handlebars = require('handlebars'),
-async = require('async'),
+var async = require('async'),
 fs = require('fs'),
 pt = require('path'),
 config = require('./config.js'),
 zlib = require("zlib"),
 cache = require('./cache.js');
-handlebars.registerHelper('index', function(index) {
-  return index+1;
-});
 var router = function(req, res, path, param, postData) {
 	var rootpath = /[^\/?]+/gi.exec(path);
 	if (rootpath === null) {
@@ -98,14 +94,10 @@ var returnStaticFile = function(req, res, path) {
 
 };
 var readIndexPost = function(res) {
-	var html = cache.template.header + cache.template.sidebar + cache.template.indexPage + cache.template.footer;
-	var template = handlebars.compile(html);
 	res.writeHead(200, {
 		'Content-Type': 'text/html;charset=utf8'
 	});
-	res.write(template({
-		post: cache.db.posts
-	}));
+	res.write(cache.db.index);
 	res.end();
 };
 var readSinglePost = function(path, res) {
@@ -119,14 +111,10 @@ var readSinglePost = function(path, res) {
 		Error404(res);
 		return;
 	}
-	var html = cache.template.header + cache.template.sidebar + cache.template.singlePage + cache.template.footer;
-	var template = handlebars.compile(html);
 	res.writeHead(200, {
 		'Content-Type': 'text/html;charset=utf8'
 	});
-	res.write(template({
-		post: cache.db.posts[fileID - 1]
-	}));
+	res.write(cache.db.posts[fileID-1].html);
 	res.end();
 };
 MIME_TYPE = {

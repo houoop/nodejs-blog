@@ -1,9 +1,6 @@
 var fs = require('fs'),
 handlebars = require('handlebars'),
 mk = require('markdown');
-handlebars.registerHelper('index', function(index) {
-	return index + 1;
-});
 var db = {
 	posts: []
 };
@@ -18,30 +15,31 @@ fs.readdir('posts', function(err, files) {
 	if (err) {
 		throw err;
 	}
-	for (var i = files.length - 1, a = 0; a <= i; a++) {
-		var splitIndex = files[a].indexOf('-');
-        if(splitIndex===-1){
-            continue;
-        }
-		db.posts[a] = {
-			title: files[a].slice(splitIndex + 1, - 3),
-			content: mk.markdown.toHTML(fs.readFileSync('posts/' + files[a], 'utf-8')),
-			index: files[a].slice(0, splitIndex)
+	for (var i = files.length - 1; i >= 0; i--) {
+		var splitIndex = files[i].indexOf('-');
+		if (splitIndex === - 1) {
+			continue;
+		}
+		db.posts[i] = {
+			title: files[i].slice(splitIndex + 1, - 3),
+			content: mk.markdown.toHTML(fs.readFileSync('posts/' + files[i], 'utf-8')),
+			index: files[i].slice(0, splitIndex)
 		};
-		console.log(db.posts[a].title + '------' + db.posts[a].index);
+		console.log(db.posts[i].title + '------' + db.posts[i].index);
 		var singlePageHtml = template.header + template.sidebar + template.singlePage + template.footer;
-		db.posts[a].html = handlebars.compile(singlePageHtml)({
-			post: db.posts[a]
+		db.posts[i].html = handlebars.compile(singlePageHtml)({
+			post: db.posts[i]
 		});
-		console.log('读取' + files[a]);
+		console.log('读取' + files[i]);
 	}
 	var indexHtml = template.header + template.sidebar + template.indexPage + template.footer;
-	db.posts = db.posts.sort(function(a, b) {
-		return b.index - a.index;
-	});
 	db.index = handlebars.compile(indexHtml)({
-		post: db.posts
+		post: db.posts.sort(function(a, b) {
+			return b.index - a.index;
+		})
+
 	});
+    db.posts.reverse();
 });
 console.log('read to cache');
 exports.db = db;

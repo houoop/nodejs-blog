@@ -4,7 +4,7 @@
             var messagesArray = valueAccessor()();
             var length = messagesArray.length;
             if (messagesArray[0] && messagesArray[length-1].type === 'recieve') {
-                element.innerText = messagesArray[length-1].name+':'+messagesArray[length-1].content;
+                element.innerText = messagesArray[length-1].from+':'+messagesArray[length-1].content;
             }
         }
     };

@@ -4,6 +4,14 @@ mk = require('markdown');
 var db = {
 	posts: []
 };
+Array.prototype.remove = function(b) {
+	var a = this.indexOf(b);
+	if (a >= 0) {
+		this.splice(a, 1);
+		return true;
+	}
+	return false;
+};
 var template = {
 	header: fs.readFileSync('template/header.html', 'utf-8'),
 	footer: fs.readFileSync('template/footer.html', 'utf-8'),
@@ -17,9 +25,6 @@ fs.readdir('posts', function(err, files) {
 	}
 	for (var i = files.length - 1; i >= 0; i--) {
 		var splitIndex = files[i].indexOf('-');
-		if (splitIndex === - 1) {
-			continue;
-		}
 		db.posts[i] = {
 			title: files[i].slice(splitIndex + 1, - 3),
 			content: mk.markdown.toHTML(fs.readFileSync('posts/' + files[i], 'utf-8')),
@@ -31,6 +36,14 @@ fs.readdir('posts', function(err, files) {
 			post: db.posts[i]
 		});
 		console.log('读取' + files[i]);
+		if (splitIndex === - 1) {
+			db.posts.splice(i,1);
+            continue;
+		}
+		if (files[i].slice( - 3) !== '.md') {
+			db.posts.splice(i,1);
+            continue;
+		}
 	}
 	var indexHtml = template.header + template.sidebar + template.indexPage + template.footer;
 	db.index = handlebars.compile(indexHtml)({
@@ -39,7 +52,7 @@ fs.readdir('posts', function(err, files) {
 		})
 
 	});
-    db.posts.reverse();
+	db.posts.reverse();
 });
 console.log('read to cache');
 exports.db = db;

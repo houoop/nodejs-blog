@@ -6,7 +6,7 @@ VPS跑得是`Ubuntu Server`，`SSH`上去之后首先就是安装Node。安装No
 
 那就第二种下载源码自己安装，找到Node的github地址clone一下。
 
-    git clone  git clone git://github.com/joyent/node.git
+    git clone git://github.com/joyent/node.git
 
 ####Ubuntu Server Git的安装
 

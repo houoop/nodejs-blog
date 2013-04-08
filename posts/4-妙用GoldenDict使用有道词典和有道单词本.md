@@ -13,7 +13,7 @@ GoldenDict支持很多词典包，但是却缺乏在线词典，语音也支持�
 
 ![](/assets/img/post4/DeepinScreenshot20130408125427.png)
 
-节目上的杂乱信息太多，还有广告，这肯定不是我想要的结果，于是我把它放到一个本地HTML的iFrame里显示，再设置一些负边距，
+界面上的杂乱信息太多，还有广告，这肯定不是我想要的结果，于是我把它放到一个本地HTML的iFrame里显示，再设置一些负边距，
 
     <!DOCTYPE html>
     <html>
@@ -29,7 +29,7 @@ GoldenDict支持很多词典包，但是却缺乏在线词典，语音也支持�
         <iframe id="a" frameborder="0">
         </iframe>
         <script>
-        var word = location.href.slice(43);
+        var word = location.href.slice(location.href.indexOf('?a')+3);
         document.getElementById('a').setAttribute(
             'src', 
             'http://dict.youdao.com/search?le=eng&q=' + word + '&keyfrom=dict.top');
@@ -47,7 +47,7 @@ GoldenDict支持很多词典包，但是却缺乏在线词典，语音也支持�
     
 ![](/assets/img/post4/DeepinScreenshot20130408124132.png)
 
-OK，主要工作完成了。需要提出的一点是，如果你需要使用单词本，是需要登陆一个网易账户的，现在因为很多东西都隐藏了，不好登陆，所以还是想要有道原始的界面登陆好（设置一下记住登陆）之后，再切换到改造的界面当中。
+OK，主要工作完成了。需要提出的一点是，如果你需要使用单词本，是需要登陆一个网易账户的，现在因为很多东西都隐藏了，不好登陆，所以还是需要在有道原始的界面登陆好（设置一下记住登陆,还有用户名密码无法直接输入，但是可以复制粘贴）之后，再切换到改造的界面当中。
 
 ###实现更多的需求
 这个方法适用于各种在线词典，需要可以自己DIY。

@@ -34,7 +34,7 @@ io.sockets.on('connection', function(socket) {
     var newUser = {
         socket: socket,
         uuid: uuid.generateUUID(),
-        name: 'anonymous-' + (onlineUser.length+1)
+        name: 'anonymous-' + (onlineUser.length + 1)
     };
     onlineUser.push(newUser);
     var users = [];
@@ -46,13 +46,13 @@ io.sockets.on('connection', function(socket) {
     }
     socket.emit('online', {
         onlineUser: users,
-        myinfo:{
-            name:newUser.name,
-            uuid:newUser.uuid
+        myinfo: {
+            name: newUser.name,
+            uuid: newUser.uuid
         }
     });
     socket.on('message', function(data) {
-        this.broadcast.emit('message',data);
+        this.broadcast.emit('message', data);
     });
     socket.on('disconnect', function() {
         //广播下线用户的uuid
@@ -69,4 +69,3 @@ io.sockets.on('connection', function(socket) {
         }
     });
 });
-

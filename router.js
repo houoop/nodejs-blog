@@ -16,6 +16,9 @@ var router = function(req, res, path, param, postData) {
 		case 'assets':
 			returnStaticFile(req, res, path);
 			break;
+		case 'feed':
+			rssFeed(res);
+			break;
 		default:
 			Error404(res);
 			break;
@@ -28,6 +31,13 @@ var Error404 = function(res) {
 		'Content-Type': 'text/html;charset=utf8'
 	});
 	res.write('<h1>我已经焕然一新了</h1><script>setTimeout(function(){location.href="/"},2000)</script>');
+	res.end();
+};
+var rssFeed = function(res) {
+	res.writeHead(200, {
+		'Content-Type': 'text/html;charset=utf8'
+	});
+	res.write(cache.feed);
 	res.end();
 };
 var returnStaticFile = function(req, res, path) {

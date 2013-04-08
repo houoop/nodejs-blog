@@ -10,7 +10,9 @@ GoldenDict支持很多词典包，但是却缺乏在线词典，语音也支持�
     http://dict.youdao.com/search?le=eng&q=%GDWORD%&keyfrom=dict.top
 
 界面显示会是这个样子
-![](http://i.minus.com/j77DXapTNNJ8W.png)
+
+![](/assets/img/post4/DeepinScreenshot20130408125427.png)
+
 节目上的杂乱信息太多，还有广告，这肯定不是我想要的结果，于是我把它放到一个本地HTML的iFrame里显示，再设置一些负边距，
 
     <!DOCTYPE html>
@@ -36,13 +38,14 @@ GoldenDict支持很多词典包，但是却缺乏在线词典，语音也支持�
     </html>
 
 那么结果就会是这个样子
-![](http://i.minus.com/jsTJczWLbEZ5Z.png)
+
+![](/assets/img/post4/DeepinScreenshot20130408124051.png)
 
 把上面的HTML代码保持到本地的html文件里。现在我们需要在Diretory里面设置一下URL为下面的地址，具体路径根据你保存的位置决定，最经典的方法是用浏览器打开本地html，地址栏了就显示地址了，但是记住一定要加?a=%GDWORD%，用于获取参数。
 
     file:///home/zhangyang/Project/dict.html?a=%GDWORD%
     
-![](http://i.minus.com/jGhY1GPqzhIZ0.png)
+![](/assets/img/post4/DeepinScreenshot20130408124132.png)
 
 OK，主要工作完成了。需要提出的一点是，如果你需要使用单词本，是需要登陆一个网易账户的，现在因为很多东西都隐藏了，不好登陆，所以还是想要有道原始的界面登陆好（设置一下记住登陆）之后，再切换到改造的界面当中。
 

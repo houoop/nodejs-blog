@@ -1,7 +1,6 @@
 var http = require('http').createServer(onRequest),
     url = require('url'),
     qs = require('querystring'),
-    io = require('socket.io').listen(http),
     uuid = require('./uuid.js'),
     router = require('./router.js');
 
@@ -25,47 +24,3 @@ function onRequest(req, res) {
         router.router(req, res, path, param, data);
     });
 }
-var onlineUser = [];
-onlineUser.remove = function(item) {
-    this[this.indexOf(item)] = this[0];
-    return this.shift();
-};
-io.sockets.on('connection', function(socket) {
-    var newUser = {
-        socket: socket,
-        uuid: uuid.generateUUID(),
-        name: 'anonymous-' + (onlineUser.length + 1)
-    };
-    onlineUser.push(newUser);
-    var users = [];
-    for (var a = 0, l = onlineUser.length; a < l; a++) {
-        users.push({
-            uuid: onlineUser[a].uuid,
-            name: onlineUser[a].name
-        });
-    }
-    socket.emit('online', {
-        onlineUser: users,
-        myinfo: {
-            name: newUser.name,
-            uuid: newUser.uuid
-        }
-    });
-    socket.on('message', function(data) {
-        this.broadcast.emit('message', data);
-    });
-    socket.on('disconnect', function() {
-        //广播下线用户的uuid
-        this.broadcast.emit('broadcast', {
-            type: 'user offline',
-            uuid: onlineUser.remove(this).uuid
-        });
-    });
-    socket.broadcast.emit('broadcast', {
-        type: 'user online',
-        user: {
-            uuid: newUser.uuid,
-            name: newUser.name
-        }
-    });
-});

@@ -14,11 +14,11 @@ Array.prototype.remove = function(b) {
 	return false;
 };
 var template = {
-	header: fs.readFileSync('template/header.html', 'utf-8'),
-	footer: fs.readFileSync('template/footer.html', 'utf-8'),
-	sidebar: fs.readFileSync('template/sidebar.html', 'utf-8'),
 	indexPage: fs.readFileSync('template/indexPage.html', 'utf-8'),
 	singlePage: fs.readFileSync('template/singlePage.html', 'utf-8')
+};
+var formatDate = function(time) {
+    return [time.getFullYear(), '-', time.getMonth() + 1, '-', time.getDate(), ' ', time.getHours(), ':', time.getMinutes(), ':', time.getSeconds()].join('');
 };
 fs.readdir('posts', function(err, files) {
 	if (err) {
@@ -30,10 +30,10 @@ fs.readdir('posts', function(err, files) {
 			title: files[i].slice(splitIndex + 1, - 3),
 			content: mk.markdown.toHTML(fs.readFileSync('posts/' + files[i], 'utf-8')),
 			index: files[i].slice(0, splitIndex),
-			ctime: fs.statSync('posts/'+files[i]).ctime
+			ctime: formatDate(fs.statSync('posts/'+files[i]).ctime)
 		};
 		console.log(db.posts[i].title + '------' + db.posts[i].index);
-		var singlePageHtml = template.header + template.sidebar + template.singlePage + template.footer;
+		var singlePageHtml = template.singlePage;
 		db.posts[i].html = handlebars.compile(singlePageHtml)({
 			post: db.posts[i]
 		});
@@ -47,7 +47,7 @@ fs.readdir('posts', function(err, files) {
             continue;
 		}
 	}
-	var indexHtml = template.header + template.sidebar + template.indexPage + template.footer;
+	var indexHtml = template.indexPage;
 	db.index = handlebars.compile(indexHtml)({
 		post: db.posts.sort(function(a, b) {
 			return b.index - a.index;

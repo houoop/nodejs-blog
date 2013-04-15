@@ -1,13 +1,74 @@
-<section id="river">
-{{#each post}}
-<article>
-<a href="/post/{{this.index}}" class="content-title">
-<h1>
-{{this.title}}
-</h1>
-</a>
-{{{this.content}}}
-</article>
-{{/each}}
+<!DOCTYPE HTML>
+<html>
+    
+    <head>
+        <meta charset="utf-8">
+        <title>
+            Houoop's Blog
+        </title>
+        <meta name="descripton" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
+        <link rel="stylesheet" href="/assets/css/style.css" media="screen" type="text/css">
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:400,400italic,300,700">
+        <!--[if lt IE 9]>
+            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js">
+            </script>
+        <![endif]-->
+    </head>
+    
+    <body>
+        <div class="wrapper">
+            <header id="header">
+                <h1>
+                    <a href="index.html">Houoop</a>
+                </h1>
+                <div class="clearfix">
+                </div>
+                <nav id="main-nav">
+                    <ul>
+                        <li>
+                            Web Developer
+                        </li>
+                    </ul>
+                </nav>
+            </header>
+            <div id="content">
+                {{#each post}}
+                <article class="index">
+                    <header>
+                        <a href="/post/{{this.index}}" class="content-title">
+                            <strong>
+                                {{this.title}}
+                            </strong>
+                        </a>
+                    </header>
+                    <div class="entry">
+                        {{{this.content}}}
+                    </div>
+                </article>
+                {{/each}}
+                <footer id="footer">
+                    <div class="alignleft">
+                        &copy; 2013
+                        <a href="http://www.houoop.com" target="_blank">HOUOOP</a>
+                    </div>
+                    <div class="clearfix">
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <script type="text/javascript">
 
-</section>
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-39956822-1']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+
+        </script>
+    </body>
+
+</html>

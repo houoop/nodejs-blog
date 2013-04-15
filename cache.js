@@ -26,9 +26,11 @@ fs.readdir('posts', function(err, files) {
 	}
 	for (var i = files.length - 1; i >= 0; i--) {
 		var splitIndex = files[i].indexOf('-');
+		var content=fs.readFileSync('posts/' + files[i], 'utf-8');
 		db.posts[i] = {
 			title: files[i].slice(splitIndex + 1, - 3),
-			content: mk.markdown.toHTML(fs.readFileSync('posts/' + files[i], 'utf-8')),
+			content: mk.markdown.toHTML(content),
+			lessContent: mk.markdown.toHTML(content.slice(0,content.indexOf('###',200))),
 			index: files[i].slice(0, splitIndex),
 			ctime: formatDate(fs.statSync('posts/'+files[i]).ctime)
 		};

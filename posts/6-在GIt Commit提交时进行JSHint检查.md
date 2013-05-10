@@ -1,6 +1,6 @@
 ###JSHint的选项配置
 
-jshint是jslint的一个分支,在实际编码过程中,jslint的检查语法过于严格.而jshint的使命就是提供一些配置关闭一些不必要的检查,下面一些jshint提供的配置,这些设置默认都是false,右边的说明为当设置为true时的作用
+`JSHint`是`JSLint`的一个分支,在实际编码过程中,'JSLint'的检查语法过于严格.而`JSHint`的使命就是提供一些配置关闭一些不必要的检查,下面一些'JSHint'提供的配置,这些设置默认都是false,右边的说明为当设置为true时的作用
 
     asi------------无视没有加分号的行尾。
     bitwise--------禁用位运算符。
@@ -28,7 +28,7 @@ jshint是jslint的一个分支,在实际编码过程中,jslint的检查语法过
 
 ###关于Git Hooks
 
-钩子(hooks)是一些在"$GIT-Project/.git/hooks"目录的脚本, 在被特定的事件触发后被调用。当"git init"命令被调用后, 一些非常有用的示例钩子文件(hooks)被拷到新仓库的hooks目录中; 但是在默认情况下这些钩子(hooks)是不生效的。 把这些钩子文件(hooks)的".sample"文件名后缀去掉就可以使它们生效了。
+`Git Hooks`(钩子)是一些在"$GIT-Project/.git/hooks"目录的脚本, 在被特定的事件触发后被调用。当"git init"命令被调用后, 一些非常有用的示例钩子文件(hooks)被拷到新仓库的hooks目录中; 但是在默认情况下这些钩子(hooks)是不生效的。 把这些钩子文件(hooks)的".sample"文件名后缀去掉就可以使它们生效了。
 
 ####Git pre-commit
 
@@ -75,4 +75,4 @@ jshint是jslint的一个分支,在实际编码过程中,jslint的检查语法过
     if __name__ == '__main__':
         jshint()
         
-将上面的代码保存为pre-commit文件到需要在commit时执行lint的项目文件的的.get/hooks(隐藏文件)文件夹中即可。下次进行commit时就会开始检查,这样有助于团队讲的代码风格统一。
+将上面的代码保存为`pre-commit`文件到需要在commit时执行lint的项目文件的的.get/hooks(隐藏文件)文件夹中即可。下次进行commit时就会开始检查,这样有助于团队讲的代码风格统一。

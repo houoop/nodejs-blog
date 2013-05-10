@@ -4,3 +4,4 @@
 # 忽略掉所有文件名是 tags 的文件.
 tags
 /.sass-cache/
+.nide

@@ -16,7 +16,7 @@ var router = function(req, res, path, param, postData) {
 		case 'assets':
 			returnStaticFile(req, res, path);
 			break;
-		case 'feed':
+		case 'atom.xml':
 			rssFeed(res);
 			break;
 		default:
@@ -43,7 +43,7 @@ var rssFeed = function(res) {
 var returnStaticFile = function(req, res, path) {
 	var ext = pt.extname(path).substr(1);
 	if (MIME_TYPE[ext] === undefined) {
-		return;
+		MIME_TYPE[ext]='application/octet-stream'
 	}
 	var realPath = pt.normalize(__dirname + path.replace(/\.\./g, ''));
 	/*

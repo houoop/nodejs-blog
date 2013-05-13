@@ -34,12 +34,17 @@ for (var i = postsFiles.length - 1; i >= 0; i--) {
         //摘要内容
         lessContent: mk.markdown.toHTML(content.slice(0,content.indexOf('###',200))),
         index: matchs[1],
-        ctime: matchs[3]
+        ctime: matchs[3],
     };
     //handlerbar 编译singlePage模板文件
     db.posts[i].html = handlebars.compile(template.singlePage)({
         post: db.posts[i]
     });
+    db.posts[i].tags=content.match(/`(.*?)`/g);
+    for(var tag in db.posts[i].tags){
+        db.posts[i].tags[tag]=db.posts[i].tags[tag].slice(1,-1);
+    }
+    console.log(db.posts[i].tags);
 }
 //将post按照index大小排序
 db.posts=db.posts.sort(function(a, b) {
@@ -54,9 +59,7 @@ db.index = handlebars.compile(template.indexPage)({
 var groupByDate=[];
 for (var i = 0,l=db.posts.length - 1; i <=l; i++) {
     // 按照年月分类
-    console.log(db.posts[i].title);
     var date=(/\d+-\d+/.exec(db.posts[i].ctime))[0];
-    console.log(date);
     var existDate=false;
     for(var x in groupByDate){
         if(groupByDate[x].date===date){
@@ -72,7 +75,6 @@ for (var i = 0,l=db.posts.length - 1; i <=l; i++) {
         });
     }
 };
-console.dir(groupByDate);
 db.archives = handlebars.compile(template.archives)({
     archives:groupByDate
 });

@@ -18,6 +18,14 @@
                         <div class="entry-content">{{{this.lessContent}}}</div>
                         <br>
                         <a href="/post/{{this.index}}" class="readmore">阅读全文</a>
+                        <div class="meta">
+                            <span class="date">{{this.ctime}}</span>
+                            <span class="tags">
+                                {{#each this.tags}}
+                                <a class="category" href="#">{{this}}</a>
+                                {{/each}}
+                            </span>
+                        </div>
                     </article>
                     {{/each}}
                 </div>

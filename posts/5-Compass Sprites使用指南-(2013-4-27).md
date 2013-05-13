@@ -1,14 +1,14 @@
 ###Compass安装
 	
-`compass`是一个功能强大的CSS工具集，功能太多，我现在还没看完，今天主要说的是`CSS Sprite`的功能，有了Compass,做雪碧图再也不是麻烦事了。
+`Compass`是一个功能强大的CSS工具集，功能太多，我现在还没看完，今天主要说的是`CSS Sprite`的功能，有了Compass,做雪碧图再也不是麻烦事了。
 
-Compass使用ruby编写，因此安装compass必须安装`ruby`，然后使用`gem`安装即可
+Compass使用ruby编写，因此安装compass必须安装ruby，然后使用gem安装即可
 
 	gem install compass
 
 ###Sprite基本用法
 
-一般把需要合成的图片放到一个单独的文件夹中例如ICON,然后在sass文件中写入
+一般把需要合成的图片放到一个单独的文件夹中例如ICON,然后在`SASS`文件中写入
 
 	@import "image/ICON/*.png";
 	@include all-ICON-sprites;
@@ -24,11 +24,11 @@ Compass使用ruby编写，因此安装compass必须安装`ruby`，然后使用`g
 
 ###内建功能函数
 
-`<map>-sprite-width`，`<map>-sprite-height`函数用来获取图片的宽高，`<map>`的意思就是sprite文件夹的名字，这样就得到合成出的图片的宽高。
+<map>-sprite-width，<map>-sprite-height函数用来获取图片的宽高，<map>的意思就是sprite文件夹的名字，这样就得到合成出的图片的宽高。
 
 ###自定义选项
 
-compass sprite包含丰富的选项用于满足各种需求，`<map>`是文件夹的名称
+compass sprite包含丰富的选项用于满足各种需求，<map>是文件夹的名称
 
 	$<map>-spacing #用于设置图片的周围空白大小默认0px
 	$<map>-repeat #设置图片是否平铺，例如$icon-repeat: repeat-x
@@ -42,7 +42,7 @@ sprite是单个图片的名称，可以为每个图片单独设置选项
 
 	$<map>-<sprite>-spacing: 5px #例子  
 
-`@include all-ICON-sprites`，这一语句会使compass在合成图片后，为每个图片生成一个`.sprites-<map>-<sprite>`的CSS类，如果你不需要的话不需要这句代码，想要在自己的CSS类中设置background-size，需要在代码中加入
+@include all-ICON-sprites，这一语句会使compass在合成图片后，为每个图片生成一个.sprites-<map>-<sprite>的CSS类，如果你不需要的话不需要这句代码，想要在自己的CSS类中设置background-size，需要在代码中加入
 
 	@import "buttons/*.png";
 

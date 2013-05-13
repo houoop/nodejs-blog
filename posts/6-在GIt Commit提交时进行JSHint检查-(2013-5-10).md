@@ -1,6 +1,6 @@
 ###JSHint的选项配置
 
-`JSHint`是`JSLint`的一个分支,在实际编码过程中,'JSLint'的检查语法过于严格.而`JSHint`的使命就是提供一些配置关闭一些不必要的检查,下面一些'JSHint'提供的配置,这些设置默认都是false,右边的说明为当设置为true时的作用
+`JSHint`是`JSLint`的一个分支,在实际编码过程中,JSLint的检查语法过于严格.而JSHint的使命就是提供一些配置关闭一些不必要的检查,下面一些JSHint提供的配置,这些设置默认都是false,右边的说明为当设置为true时的作用
 
     asi------------无视没有加分号的行尾。
     bitwise--------禁用位运算符。
@@ -28,11 +28,11 @@
 
 ###关于Git Hooks
 
-`Git Hooks`(钩子)是一些在"$GIT-Project/.git/hooks"目录的脚本, 在被特定的事件触发后被调用。当"git init"命令被调用后, 一些非常有用的示例钩子文件(hooks)被拷到新仓库的hooks目录中; 但是在默认情况下这些钩子(hooks)是不生效的。 把这些钩子文件(hooks)的".sample"文件名后缀去掉就可以使它们生效了。
+`Git` Hooks(钩子)是一些在"$GIT-Project/.git/hooks"目录的脚本, 在被特定的事件触发后被调用。当"git init"命令被调用后, 一些非常有用的示例钩子文件(hooks)被拷到新仓库的hooks目录中; 但是在默认情况下这些钩子(hooks)是不生效的。 把这些钩子文件(hooks)的".sample"文件名后缀去掉就可以使它们生效了。
 
 ####Git pre-commit
 
-这个钩子被 'git-commit' 命令调用, 而且可以通过在命令中添加--no-verify参数来跳过。这个钩子没有参数，在得到提交消息和开始提交(commit)前被调用。如果钩子执行结果是非零，那么 'git-commit' 命令就会中止执行。
+这个钩子被 git-commit 命令调用, 而且可以通过在命令中添加--no-verify参数来跳过。这个钩子没有参数，在得到提交消息和开始提交(commit)前被调用。如果钩子执行结果是非零，那么 git-commit 命令就会中止执行。
 
 ###Git Commit之前进行JSHint检查
 
@@ -75,4 +75,4 @@
     if __name__ == '__main__':
         jshint()
         
-将上面的代码保存为`pre-commit`文件到需要在commit时执行lint的项目文件的的.get/hooks(隐藏文件)文件夹中即可。下次进行commit时就会开始检查,这样有助于团队讲的代码风格统一。
+将上面的代码保存为pre-commit文件到需要在commit时执行lint的项目文件的的.get/hooks(隐藏文件)文件夹中即可。下次进行commit时就会开始检查,这样有助于团队讲的代码风格统一。

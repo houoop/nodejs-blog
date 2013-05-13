@@ -19,13 +19,9 @@
                                 <span class="date">{{this.ctime}}</span>
                                 <br>
                                 <span class="tags">
-
-                                    <a class='category' href='/blog/categories/linux/'>Linux</a>
-
-                                </span>
-
-                                <span class="comments">
-                                    <a href="/blog/2013/04/10/chu-tan-linuxjin-cheng-xian-cheng/#disqus_thread">评论</a>
+                                    {{#each this.tags}}
+                                    <a class="category" href="#">{{this}}</a>
+                                    {{/each}}
                                 </span>
 
                             </div>

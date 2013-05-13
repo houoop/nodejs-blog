@@ -2031,5 +2031,13 @@ a:hover {
 }
 
 .readmore {
-    float: right
+    float: right;
+    position: relative;
+    top: 3px;
+}
+.post .tags a{
+    margin-right: 10px;
+}
+.meta .tags a{
+    margin-right: 8px;
 }

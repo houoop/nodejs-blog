@@ -1,18 +1,11 @@
 var fs = require('fs'),
-handlebars = require('handlebars'),
-mk = require('markdown');
-var rss = require('rss');
+    handlebars = require('handlebars'),
+    mk = require('markdown');
+//缓存post数据
 var db = {
     posts: []
 };
-Array.prototype.remove = function(b) {
-    var a = this.indexOf(b);
-    if (a >= 0) {
-        this.splice(a, 1);
-        return true;
-    }
-    return false;
-};
+//合并包含include 的模板
 var getFullHTML=function(filepath){
     var reg=/<% include (.*) %>/gi;
     var content=fs.readFileSync(filepath, 'utf-8');
@@ -20,73 +13,73 @@ var getFullHTML=function(filepath){
         return fs.readFileSync($1, 'utf-8');
     });
 }
+// 缓存模板文件
 var template = {
     indexPage: getFullHTML('template/index.html'),
-    singlePage: getFullHTML('template/singlePage.html')
+    singlePage: getFullHTML('template/singlePage.html'),
+    archives:getFullHTML('template/archives.html')
 };
-var formatDate = function(time) {
-    return [time.getFullYear(), '-', time.getMonth() + 1, '-', time.getDate(), ' ', time.getHours(), ':', time.getMinutes(), ':', time.getSeconds()].join('');
-};
-fs.readdir('posts', function(err, files) {
-    if (err) {
-        throw err;
+//读取posts文件目录
+var postsFiles=fs.readdirSync('posts');
+for (var i = postsFiles.length - 1; i >= 0; i--) {
+    var content=fs.readFileSync('posts/' + postsFiles[i], 'utf-8');
+    //匹配index,post title和create date
+    var matchs=/(\d+)-(.*?)-\((.*)\)/.exec(postsFiles[i]);
+    if(!matchs[1]||!matchs[2]||!matchs[3]){
+        continue;
     }
-    for (var i = files.length - 1; i >= 0; i--) {
-        var splitIndex = files[i].indexOf('-');
-        var content=fs.readFileSync('posts/' + files[i], 'utf-8');
-        db.posts[i] = {
-            title: files[i].slice(splitIndex + 1, - 3),
-            content: mk.markdown.toHTML(content),
-            lessContent: mk.markdown.toHTML(content.slice(0,content.indexOf('###',200))),
-            index: files[i].slice(0, splitIndex),
-            ctime: formatDate(fs.statSync('posts/'+files[i]).ctime)
-        };
-        console.log(db.posts[i].title + '------' + db.posts[i].index);
-        var singlePageHtml = template.singlePage;
-        db.posts[i].html = handlebars.compile(singlePageHtml)({
-            post: db.posts[i]
-        });
-        console.log('读取' + files[i]);
-        if (splitIndex === - 1) {
-            db.posts.splice(i,1);
-            continue;
-        }
-        if (files[i].slice( - 3) !== '.md') {
-            db.posts.splice(i,1);
-            continue;
-        }
-    }
-    var indexHtml = template.indexPage;
-    db.index = handlebars.compile(indexHtml)({
-        post: db.posts.sort(function(a, b) {
-            return b.index - a.index;
-        })
-
+    db.posts[i] = {
+        title: matchs[2],
+        content: mk.markdown.toHTML(content),
+        //摘要内容
+        lessContent: mk.markdown.toHTML(content.slice(0,content.indexOf('###',200))),
+        index: matchs[1],
+        ctime: matchs[3]
+    };
+    //handlerbar 编译singlePage模板文件
+    db.posts[i].html = handlebars.compile(template.singlePage)({
+        post: db.posts[i]
     });
-    db.posts.reverse();
-    var feed = new rss({
-            title: 'HOUOOP\'s Blog',
-            description: 'HOUOOP\'s Blog',
-            feed_url: 'http://www.houoop.com/feed',
-            site_url: 'http://www.houoop.com',
-            image_url: 'http://www.houoop.com/assets/img/favicon.ico',
-            author: 'zhangyang'
-        });
-    for(var i=0,l=db.posts.length;i<l;i++){
-        feed.item({
-            title:  db.posts[i].title,
-            description: db.posts[i].content,
-            url: 'http://www.houoop.com/post/'+db.posts[i].index,
-            author: 'houoop',
-            date: db.posts[i].ctime
-        });
-        console.log(db.posts[i].title);
-    }
-    var xml=feed.xml();
-    console.log('read to cache');
-    exports.feed=xml;
-    exports.db = db;
-    exports.template = template;
+}
+//将post按照index大小排序
+db.posts=db.posts.sort(function(a, b) {
+    return b.index - a.index;
 });
+//handlerbar 编译index模板文件
+db.index = handlebars.compile(template.indexPage)({
+    posts: db.posts
+});
+//handlerbar 编译archives模板文件
+//按照年月对文章分类
+var groupByDate=[];
+for (var i = 0,l=db.posts.length - 1; i <=l; i++) {
+    // 按照年月分类
+    console.log(db.posts[i].title);
+    var date=(/\d+-\d+/.exec(db.posts[i].ctime))[0];
+    console.log(date);
+    var existDate=false;
+    for(var x in groupByDate){
+        if(groupByDate[x].date===date){
+            groupByDate[x].posts.push(db.posts[i]);
+            existDate=true;
+            break;
+        }
+    }
+    if(!existDate){
+        groupByDate.push({
+            date:date,
+            posts:[db.posts[i]]
+        });
+    }
+};
+console.dir(groupByDate);
+db.archives = handlebars.compile(template.archives)({
+    archives:groupByDate
+});
+
+console.log('read to cache');
+exports.db = db;
+exports.template = template;
+
 
 

@@ -3,7 +3,8 @@ fs = require('fs'),
 pt = require('path'),
 config = require('./config.js'),
 zlib = require("zlib"),
-cache = require('./cache.js');
+cache = require('./cache.js'),
+feed=require('./feed.js');
 var router = function(req, res, path, param, postData) {
 	var rootpath = /[^\/?]+/gi.exec(path);
 	if (rootpath === null) {
@@ -18,6 +19,9 @@ var router = function(req, res, path, param, postData) {
 			break;
 		case 'atom.xml':
 			rssFeed(res);
+			break;
+		case 'archives':
+			readArchivesPost(res);
 			break;
 		default:
 			Error404(res);
@@ -37,7 +41,7 @@ var rssFeed = function(res) {
 	res.writeHead(200, {
 		'Content-Type': 'text/html;charset=utf8'
 	});
-	res.write(cache.feed);
+	res.write(feed.rss);
 	res.end();
 };
 var returnStaticFile = function(req, res, path) {
@@ -108,6 +112,13 @@ var readIndexPost = function(res) {
 		'Content-Type': 'text/html;charset=utf8'
 	});
 	res.write(cache.db.index);
+	res.end();
+};
+var readArchivesPost = function(res) {
+	res.writeHead(200, {
+		'Content-Type': 'text/html;charset=utf8'
+	});
+	res.write(cache.db.archives);
 	res.end();
 };
 var readSinglePost = function(path, res) {
